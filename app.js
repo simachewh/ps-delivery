@@ -48,17 +48,17 @@ app.use(morgan('dev'));
  * todo : add option to mongodb connection*/
 mongoose.connect("mongodb://localhost:27017/psdelivery");
 
-/** Basic route for home, @host:port */
+/** Basic router for home, @host:port */
 app.get("/", function (request, response) {
     var welcomeHome = {
         message: "welcome home",
-        tip: "The only route to PS deliver is here",
+        tip: "The only router to PS deliver is here",
         routes: {
             psAPIHome: "http://localhost:" + port + "/api.psdelivery"
         }
     }
     response.json(welcomeHome);
-}); //end of basic route for howe
+}); //end of basic router for howe
 
 /** Register all routes to the app here*/
 app.use("/api.psdelivery", apiHome);

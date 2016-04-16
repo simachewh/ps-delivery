@@ -3,16 +3,16 @@
  */
 var express = require("express");
 /**
- * Collect all sub routes under the API root route.
+ * Collect all sub routes under the API root router.
  */
 var employeesRoute = require("./employees-route");
 
 /**
- * Define home route, which is the API's root route.
+ * Define home router, which is the API's root router.
  */
 var apiHomeRoute = express.Router();
 /**
- * The API home route, which will be registered on the app
+ * The API home router, which will be registered on the app
  */
 apiHomeRoute.get("/", function (request, response) {
 
@@ -20,11 +20,13 @@ apiHomeRoute.get("/", function (request, response) {
     var welcomeClue = {
         intro: "Welcome to PS Equipment Delivery request service. ",
         tip: "Follow one of the routes to continue",
-        routes: {},
+        routes: {
+            employees: "http://"
+        },
         other: ":)"
     }
     response.json(welcomeClue);
-}); //end of API home route definition.
+}); //end of API home router definition.
 
 /**
  * Register all routes under the API
@@ -32,6 +34,6 @@ apiHomeRoute.get("/", function (request, response) {
 apiHomeRoute.use("/employees", employeesRoute);
 
 /**
- * Export the home API route and its registered sub routes.
+ * Export the home API router and its registered sub routes.
  */
 module.exports = apiHomeRoute;
