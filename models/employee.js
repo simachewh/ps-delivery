@@ -19,11 +19,12 @@ var userNameMinLength = [4, 'The value of `{PATH}` (`{VALUE}`) is less than the 
  */
 var EmployeeSchema = new Schema(
     {
-        userName: {type: String, required: true, minlength: userNameMinLength, lowercase: true, trim: true, index: {unique: true}},
+        userName: {type: String, required: true, minlength: userNameMinLength,
+            lowercase: true, trim: true, index: {unique: true}},
         password: {type: String, required: true, select: false},
         firstName: {type: String, required: true, select: true},
         lastName: {type: String, required: true, select: true},
-        email: {type: String, required: true, select: true},
+        email: {type: String, required: true, select: true, unique: true},
         phone: {type: String, required: true, select: true},
         // todo: Role should have enum values like [super, manager, admin, cleaner]
         role: {type: String, required: true, select: true},

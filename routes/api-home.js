@@ -21,7 +21,7 @@ apiHomeRoute.get("/", function (request, response) {
         intro: "Welcome to PS Equipment Delivery request service. ",
         tip: "Follow one of the routes to continue",
         routes: {
-            employees: "http://"
+            employees: "http://localhost:1980/api.psdelivery/employees"
         },
         other: ":)"
     }

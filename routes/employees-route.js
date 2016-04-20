@@ -81,4 +81,56 @@ router.route("/")
 
     });
 
+router.route("/:employee_id")
+
+    /**
+     * Get an Employee with the given id
+     */
+    .get(function (req, res) {
+        Employee.findById(req.params.employee_id, function (err, employee) {
+            if (err){
+                return res.send(err);
+            }
+
+            res.json(employee);
+        });
+    })
+    /**
+     * Updating Employee of employee_id, with the given params
+     */
+    .put(function (req, res) {
+        Employee.findById(req.params.employee_id, function (err, employee) {
+
+            if (err){
+                return res.send(err);
+            }
+
+            // Set the new updates
+            if(req.body.userName) employee.userName = req.body.userName;
+            if(req.body.firstName) employee.firstName = req.body.firstName;
+            if(req.body.lastName) employee.lastName = req.body.lastName;
+            if(req.body.email) employee.email = req.body.email;
+
+            employee.save(function (err) {
+                if(err){
+                    return res.send(err);
+                }
+                res.json({success: true, employee: employee});
+            });
+        });
+    })
+    /**
+     * Deleting Employee by the given id.
+     */
+    .delete(function (req, res) {
+        Employee.remove({
+            _id: req.body.employee_id
+        }, function (err, employee) {
+            if(err){
+                res.send(err);
+            }
+            res.json({success: true, employee: employee});
+        });
+    });
+
 module.exports = router;
