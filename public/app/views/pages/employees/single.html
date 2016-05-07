@@ -1,0 +1,50 @@
+<div class="page-header">
+    <h1 ng-if="user.type == 'create'">Create User</h1>
+    <h1 ng-if="user.type == 'edit'">Edit User</h1>
+</div>
+
+<form class="form-horizontal" ng-submit="employee.saveEmployee()">
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="employee.employeeData.name">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="employee.employeeData.userName">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-6">
+            <input type="password" class="form-control" ng-model="employee.employeeData.password">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+            <button type="submit" class="btn btn-success btn-lg btn-block"
+                    ng-if="employee.type == 'create'">Create Employee
+            </button>
+            <button type="submit" class="btn btn-success btn-lg btn-block"
+                    ng-if="employee.type == 'edit'">Update Employee
+            </button>
+        </div>
+    </div>
+
+</form>
+
+<div class="row show-hide-message" ng-show="employee.message">
+    <div class="col-sm-6 col-sm-offset-2">
+
+        <div class="alert alert-info">
+            {{ employee.message }}
+        </div>
+
+    </div>
+</div>

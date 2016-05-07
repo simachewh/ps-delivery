@@ -1,0 +1,38 @@
+<div class="page-header">
+    <h1>
+        Users
+        <a href="/employees/create" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            New User
+        </a>
+    </h1>
+
+</div>
+
+<div class="jumbotron text-center" ng-show="employee.processing">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading Employees...</p>
+</div>
+
+<table class="table table-bordered table-striped" ng-show="employee.employees">
+    <thead>
+    <tr>
+        <th>_id</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th class="col-sm-2"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="person in employee.employees">
+        <td>{{ person._id }}</td>
+        <td>{{ person.name }}</td>
+        <td>{{ person.userName }}</td>
+        <td class="col-sm-2">
+            <a ng-href="/employee/{{ person._id }}" class="btn btn-danger">Edit</a>
+            <a href="#" ng-click="employee.deleteEmployee(person._id)"
+               class="btn btn-primary">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>

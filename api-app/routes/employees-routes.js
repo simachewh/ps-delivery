@@ -3,15 +3,10 @@
  */
 
 var express = require("express");
-var db = require("../db/db");
 
 var Employee = require("../models/employee");
 
 var router = express.Router();
-
-/*router.get("/", function (request, response) {
-    response.json({message: "List of Employees"});
-})*/
 
 /**
  * Route handlers for the @/
@@ -23,8 +18,8 @@ router.route("/")
      */
     .get(function (req, res) {
         Employee.find(function (err, employees) {
-            if (err){
-                res.send(err);
+            if (err) {
+                return res.send(err);
             }
             res.send(employees);
         });
@@ -36,16 +31,24 @@ router.route("/")
     .post(function (req, res) {
         console.log(req);
         if (!(req.body.firstName && req.body.lastName && req.body.phone
-            && req.body.email && req.body.role && req.body.userName)){
+            && req.body.email && req.body.role && req.body.userName)) {
             return res.status(400).json({
                 message: "some params missing",
-                fields: "userName, password, role, firstName, lastName, phone, email"
+                fields: [
+                    "userName",
+                    "password",
+                    "role",
+                    "firstName",
+                    "lastName",
+                    "phone",
+                    "email"
+                ]
             });
         }
 
         var employee = new Employee();
 
-        try{
+        try {
             employee.userName = req.body.userName;
             employee.password = req.body.password;
             employee.firstName = req.body.firstName;
@@ -57,14 +60,14 @@ router.route("/")
             // Try saving the employee
             employee.save(function (err) {
                 // If saving returns an error
-                if (err){
+                if (err) {
                     // And if the error is a "duplicate entry" type
-                    if (err.code == 11000){
+                    if (err.code == 11000) {
                         return res.json({
                             success: false,
                             message: 'An employee with that username already exists. '
                         });
-                    }else{
+                    } else {
                         return res.send(err);
                     }
                 }
@@ -75,8 +78,9 @@ router.route("/")
                     newEmployee: employee
                 });
             })
-        }catch (ex){
-            res.send(err.message);
+        } catch (ex) {
+            //todo: log errors to file, and handle response better.
+            return res.send(ex.message);
         }
 
     });
@@ -87,32 +91,35 @@ router.route("/:employee_id")
      * Get an Employee with the given id
      */
     .get(function (req, res) {
-        Employee.findById(req.params.employee_id, function (err, employee) {
-            if (err){
-                return res.send(err);
-            }
+        Employee.findById(req.params.employee_id,
+            function (err, employee) {
+                if (err) {
+                    return res.send(err);
+                }
 
-            res.json(employee);
-        });
+                res.json(employee);
+            });
     })
     /**
      * Updating Employee of employee_id, with the given params
      */
     .put(function (req, res) {
-        Employee.findById(req.params.employee_id, function (err, employee) {
+        Employee.findById(req.params.employee_id, 
+            function (err, employee) {
 
-            if (err){
+            if (err) {
                 return res.send(err);
             }
 
-            // Set the new updates
-            if(req.body.userName) employee.userName = req.body.userName;
-            if(req.body.firstName) employee.firstName = req.body.firstName;
-            if(req.body.lastName) employee.lastName = req.body.lastName;
-            if(req.body.email) employee.email = req.body.email;
+            // Set the new updates todo: surround in try catch
+            if (req.body.userName) employee.userName = req.body.userName;
+            if (req.body.firstName) employee.firstName = req.body.firstName;
+            if (req.body.lastName) employee.lastName = req.body.lastName;
+            if (req.body.email) employee.email = req.body.email;
 
+            //save the updated employee
             employee.save(function (err) {
-                if(err){
+                if (err) {
                     return res.send(err);
                 }
                 res.json({success: true, employee: employee});
@@ -126,11 +133,14 @@ router.route("/:employee_id")
         Employee.remove({
             _id: req.body.employee_id
         }, function (err, employee) {
-            if(err){
-                res.send(err);
+            if (err) {
+                return res.send(err);
             }
             res.json({success: true, employee: employee});
         });
     });
+router.get("/me", function (req, res) {
+   res.send(req.decoded);
+});
 
 module.exports = router;
