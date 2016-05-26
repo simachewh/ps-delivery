@@ -17,6 +17,8 @@ var path = require("path");
  * Routes defined for this app in other files.
  */
 var employeesRoute = require("./api-app/routes/employees-routes");
+var apiHome = require("./api-app/routes/api-home")(app, express);
+
 var config = require("./config");
 
 /** Initialize modules to use */
@@ -60,7 +62,6 @@ mongoose.connect(config.database);
  */
 app.use(express.static(__dirname + '/public'));
 
-var apiHome = require("./api-app/routes/api-home")(app, express);
 
 /** Basic router for home, @host:port */
 /*app.get("/", function (request, response) {

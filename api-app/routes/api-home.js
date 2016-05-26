@@ -89,14 +89,14 @@ module.exports = function (app, express) {
                             },
                             secretKey,
                             {
-                                expiresInMinutes: 1 // expires in 2 hrs
+                                expiresIn: 86400 // expires in 24 hrs
                             }
                         );
                         // Return the token
                         res.json({
                             success: true,
                             token: token,
-                            message: "Acess token"
+                            message: "Your Acess token"
                         });
                     }
                 }
@@ -104,7 +104,7 @@ module.exports = function (app, express) {
     });
 
     /**
-     * Route midle ware to verify a token
+     * Route middle ware to verify a token
      */
     apiHomeRoute.use(function (req, res, next) {
         console.log("Somebody tried to access the API. Checking token");
@@ -119,12 +119,14 @@ module.exports = function (app, express) {
                 if (err){
                     return res.json({
                         success: false,
-                        message: "Failed to authenticate token."
+                        message: "Failed to authenticate token.",
+                        error: err.message
                     });
                 }
                 else{
                     // If everything is good, save to request for use in other routes
                     req.decoded = decoded;
+                    next();
                 }
 
             });
