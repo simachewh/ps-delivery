@@ -17,7 +17,6 @@ var path = require("path");
  * Routes defined for this app in other files.
  */
 var employeesRoute = require("./api-app/routes/employees-routes");
-var apiHome = require("./api-app/routes/api-home")(app, express);
 
 var config = require("./config");
 
@@ -60,11 +59,11 @@ mongoose.connect(config.database);
  * request come from. Say for example if I want to put the frontend
  * on another server.
  */
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
 
 /** Basic router for home, @host:port */
-/*app.get("/", function (request, response) {
+app.get("/", function (request, response) {
  var welcomeHome = {
  message: "welcome home, from server.js",
  tip: "The only router to PS deliver is here",
@@ -73,22 +72,21 @@ app.use(express.static(__dirname + '/public'));
  }
  };
  response.json(welcomeHome);
- }); //end of basic router for home*/
+ }); //end of basic router for home
 
 /** Register all routes to the app here*/
+var apiHome = require("./api-app/routes/api-home")(app, express);
 app.use("/api.psdelivery", apiHome);
 
-/** Catch call. Redirect all unregistered URLs such as
+/** Catch all. Redirect all unregistered URLs such as
  * /api.psdelivery/* to frontend
- * todo: check if why this implementation is not working**/
+ * todo: check if why this implementation is not working
+ * todo: it is because of some part of the url is / and some \
+ * *
 app.get("*", function (req, res) {
-    console.log("hit url catch call * " + __dirname +
-        "/public/app/views/index.html");
-    console.log("Req URL: " + req.url);
-    res.sendFile(path.join(__dirname +
-    "\\public\\app\\views\\index.html"));
+    res.sendFile(path.join(__dirname + "/public/app/views/index.html"));
 });
-
+ */
 /*Start the server and log the time of start with port.*/
 app.listen(port);
 require("util").log('PS delivery on port ' + port);

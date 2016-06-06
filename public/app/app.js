@@ -1,11 +1,6 @@
-angular.module("userApp", ["ngAnimate", "app.routes",
-        "authService", "mainCtrl",
-        "employeeCtrl", "employeeService"])
+/**
+ * Created by Simachew on 31-May-16.
+ */
 
-    // application configuration to integrate token into requests
-    .config(function ($httpProvider) {
 
-        // attach our auth interceptor to the http requests
-        $httpProvider.interceptors.push("AuthInterceptor");
-
-    });
+var myAppTest = angular.module("resourceManagerApp", []);

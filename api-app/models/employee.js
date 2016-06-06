@@ -78,7 +78,7 @@ var EmployeeSchema = new Schema(
             }
         },
         address: {
-            home: {
+            street: {
                 type: String
             },
             zipCode: {
@@ -101,7 +101,7 @@ EmployeeSchema.pre("save", function (next) {
     var employee = this;
 
     /**
-     * Hash the passowrd only if user is new or the password is modified.
+     * Hash the password only if user is new or the password is modified.
      */
     if (!employee.isModified("password")) {
         return next();
@@ -109,7 +109,7 @@ EmployeeSchema.pre("save", function (next) {
 
     /**
      * Generate the hash for password.
-     * todo: No salt used for hashing the pasword
+     * todo: No salt used for hashing the password
      */
     bcrypt.hash(employee.password, null, null, function (err, hash) {
         if (err) {
@@ -118,7 +118,7 @@ EmployeeSchema.pre("save", function (next) {
 
         employee.password = hash;
         next();
-    })
+    });
 }); // ********* End of password hashing before saving employee. **********
 
 /**
