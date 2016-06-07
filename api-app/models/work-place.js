@@ -7,10 +7,14 @@
  */
 var mongoose = require("mongoose");
 
+/**
+ * Validator for name of a Workplce.
+ * @type {*[]}
+ */
 var nameMinLength = [4, "Work Place name MinLength can't be less than {MINLENGTH}."];
 
 /**
- * Initialize
+ * Initialize mongoose Schema.
  */
 var Schema = mongoose.Schema;
 /**
@@ -33,7 +37,7 @@ var WorkPlaceSchema = new Schema(
         },
         isPast : {
             type: Boolean,
-            required: true
+            default: false
         },
         noOfClosets: {
             type: Number

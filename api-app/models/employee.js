@@ -61,7 +61,7 @@ var EmployeeSchema = new Schema(
         },
         isPast: {
             type: Boolean,
-            required: true,
+            default: false,
             select: true
         },
         taxNumber: {

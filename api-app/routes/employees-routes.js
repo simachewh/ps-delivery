@@ -74,6 +74,7 @@ router.route("/")
 
                 // Else if no error, save successful
                 res.json({
+                    success: true,
                     message: "Employee Created",
                     newEmployee: employee
                 });

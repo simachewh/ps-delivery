@@ -5,16 +5,16 @@
 var mongoose = require("mongoose");
 
 /**
- * Validator for the name of an Item.
+ * Validator for the name of an ItemModel.
  * @type {*[]}
  */
-var nameMinLength = [4, "Item name can't be less than {MINLENGTH} characters."];
+var nameMinLength = [4, "ItemModel name can't be less than {MINLENGTH} characters."];
 
 /**
- * Validator for nickname of an Item.
+ * Validator for nickname of an ItemModel.
  * @type {*[]}
  */
-var nickNameMinLength = [3, "Item nick name can't be less than {MINLENGTH} characters."];
+var nickNameMinLength = [3, "ItemModel nick name can't be less than {MINLENGTH} characters."];
 
 /**
  * An enum validator for units of an Item.
@@ -43,7 +43,7 @@ var standardSize = "uni";
 var Schema = mongoose.Schema;
 
 /**
- * Item Schema definition.
+ * ItemModel Schema definition.
  */
 var ItemSchema = new Schema(
     {
@@ -52,7 +52,8 @@ var ItemSchema = new Schema(
             required: true,
             minlength: nameMinLength,
             lowercase: true,
-            trim: true
+            trim: true,
+            index: {unique: true}
         },
         nickName: {
             type: String,
@@ -84,27 +85,25 @@ var ItemSchema = new Schema(
          * sizes for when the item in question has a standard size.For example:
          * a spray bottle or a floor towel, frote.
          */
-        sizes: [
-            {
-                type: String,
-                lowercase: true,
-                trim: true
-            }
-        ]
+        availableSizes: [String],
+        isReparable: {type: Boolean, default: false }
     }
 );
 
 /**
  * Middleware to add default size of an item if not specified.
+ * TOdo: restrict saving if isPast is true. saving/ updating
+ * a past object is done only after updating ispast to true through
+ * the url provided for it.
  */
 ItemSchema.pre("save", function (next) {
     var item = this;
 
-    if(!item.sizes){
-        item.sizes = [standardSize];
+    if(!item.availableSizes || item.avaisizes.length == 0){
+        item.avaisizes = [standardSize];
     }
 
     next();
 });
 
-module.exports = mongoose.model("Item", ItemSchema);
+module.exports = mongoose.model("ItemModel", ItemSchema);
