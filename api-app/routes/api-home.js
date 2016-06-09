@@ -14,6 +14,7 @@ var jwt = require("jsonwebtoken");
  */
 var employeesRoute = require("./employees-routes");
 var workPlaceRoutes = require("./workPlace-routes");
+var itemRoutes = require("./item-routes");
 
 var config = require("../../config");
 
@@ -149,6 +150,7 @@ module.exports = function (app, express) {
      */
     apiHomeRoute.use("/employees", employeesRoute);
     apiHomeRoute.use("/workplaces", workPlaceRoutes);
+    apiHomeRoute.use("/items", itemRoutes);
 
     return apiHomeRoute;
 

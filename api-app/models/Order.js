@@ -13,6 +13,7 @@ var OrderSchema = new Schema(
     {
         owner: Employee,
         place: WorkPlace,
+        placedBy: Employee,
 
         /*
         owner: {type: mongoose.Schema.Types.ObjectId, ref: "Employee"},

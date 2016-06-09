@@ -91,7 +91,8 @@ function updateItem(itemId, newItem) {
         if (newItem.availableSizes) item.avaisizes = newItem.availableSizes;
         if (newItem.isReparable) item.isReparable = newItem.isReparable;
 
-       return item.saveItem(item);
+        //todo: improve the message to this function's
+       return saveItem(item);
     });
 
 };
@@ -102,6 +103,7 @@ function updateItem(itemId, newItem) {
  * @param itemId
  */
 function deleteItem(itemId) {
+    /*
     ItemModel.remove({_id: itemId}, function (err, item) {
         if (err){
             return err;
@@ -112,6 +114,22 @@ function deleteItem(itemId) {
             item: item
         };
     });
+    */
+    var item = ItemModel.findById(itemId,
+    function (err, foundItem) {
+        if(err){
+            return err;
+        }
+    });
+
+    item.isPast = flase;
+    var result = saveItem(item);
+    if(result.success){
+        result.message = "Item removed";
+        return result;
+    } else {
+        return result;
+    }
 };
 
 itemController.saveItem = saveItem;
