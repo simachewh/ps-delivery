@@ -27,7 +27,7 @@ var OrderSchema = new Schema(
         items: [
             {
                 item: Item,
-                /*item: {type: mongoose.Schema.Types.ObjectId, ref: "ItemModel"}, */
+                /*item: {type: mongoose.Schema.Types.ObjectId, ref: "Item"}, */
                 quantity: {type: Number, default: 1}
             }
         ]

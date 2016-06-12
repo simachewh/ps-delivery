@@ -5,16 +5,16 @@
 var mongoose = require("mongoose");
 
 /**
- * Validator for the name of an ItemModel.
+ * Validator for the name of an Item.
  * @type {*[]}
  */
-var nameMinLength = [4, "ItemModel name can't be less than {MINLENGTH} characters."];
+var nameMinLength = [4, "Item name can't be less than {MINLENGTH} characters."];
 
 /**
- * Validator for nickname of an ItemModel.
+ * Validator for nickname of an Item.
  * @type {*[]}
  */
-var nickNameMinLength = [3, "ItemModel nick name can't be less than {MINLENGTH} characters."];
+var nickNameMinLength = [3, "Item nick name can't be less than {MINLENGTH} characters."];
 
 /**
  * An enum validator for units of an Item.
@@ -30,7 +30,7 @@ var unitsList = {
  * @type {{values: string, message: string}}
  */
 var purposeList = {
-    values: "general floor wc dust surface glass carpet special",
+    values: "general floor wc dust surface glass carpet special".split(" "),
     message: "No such value {VALUE} defined for {PATH}"
 };
 
@@ -43,7 +43,7 @@ var standardSize = "uni";
 var Schema = mongoose.Schema;
 
 /**
- * ItemModel Schema definition.
+ * Item Schema definition.
  */
 var ItemSchema = new Schema(
     {
@@ -69,7 +69,7 @@ var ItemSchema = new Schema(
             type: String,
             lowercase: true,
             trim: true,
-            enum: unitsList
+            enum: purposeList
         },
         /**
          * todo: is there a better approach than units and sizes.
@@ -78,7 +78,8 @@ var ItemSchema = new Schema(
             type: String,
             lowercase: true,
             trim: true,
-            enum: unitsList
+            enum: unitsList,
+            default: unitsList[unitsList.values.length - 1]
         },
         /**
          * A pres save hook (middleware) is needed to initialize an empty array of
@@ -86,7 +87,8 @@ var ItemSchema = new Schema(
          * a spray bottle or a floor towel, frote.
          */
         availableSizes: [String],
-        isReparable: {type: Boolean, default: false }
+        isReparable: {type: Boolean, default: false},
+        isPast: {type: Boolean, default: false}
     }
 );
 
@@ -99,11 +101,11 @@ var ItemSchema = new Schema(
 ItemSchema.pre("save", function (next) {
     var item = this;
 
-    if(!item.availableSizes || item.avaisizes.length == 0){
+    if(!item.availableSizes){
         item.avaisizes = [standardSize];
     }
 
     next();
 });
 
-module.exports = mongoose.model("ItemModel", ItemSchema);
+module.exports = mongoose.model("Item", ItemSchema);

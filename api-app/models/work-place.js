@@ -61,10 +61,10 @@ var WorkPlaceSchema = new Schema(
                 type: String
             },
             city:{
-                type: String
+                type: String, default: "Vaasa"
             },
             country: {
-                type : String
+                type : String, default: "Finland"
             }
 
         }

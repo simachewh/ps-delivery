@@ -73,12 +73,12 @@ router.route("/")
                 }
 
                 // Else if no error, save successful
-                res.json({
+                return res.json({
                     success: true,
                     message: "Employee Created",
                     newEmployee: employee
                 });
-            })
+            });
         } catch (ex) {
             //todo: log errors to file, and handle response better.
             return res.send(ex.message);
@@ -98,7 +98,7 @@ router.route("/:employee_id")
                     return res.send(err);
                 }
 
-                res.json(employee);
+                return res.json(employee);
             });
     })
     /**
@@ -123,7 +123,9 @@ router.route("/:employee_id")
                 if (err) {
                     return res.send(err);
                 }
-                res.json({success: true, employee: employee});
+                res.json({
+                    success: true, 
+                    employee: employee});
             });
         });
     })

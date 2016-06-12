@@ -43,25 +43,29 @@ router.route("/")
 
         var workPlace = new WorkPlace();
         //todo: implement saving this workplace object
-        if(!(req.body.name)){
-            return res.status(400).json({
-                message: "Some fields are missing",
-                missing: ["name"],
-                fields: ["name", "isPast", "nickName"]
-            });
-        }
+      
 
         try {
-            workPlace.isPast = req.body.isPast || false;
+            workPlace.name = req.body.name;
+            workPlace.nickName = req.body.nickName;
+            workPlace.isPast = req.body.isPast;
+            workPlace.noOfClosets = req.body.noOfClosets;
+            workPlace.address = req.body.address;
+            workPlace.contactPerson = req.body.contactPerson;
+
+            workPlace.save(function (err) {
+                if (err){
+                    return res.send(err);
+                }
+               return res.json({
+                   success: true,
+                   message: "Work Place saved"
+               });
+            });
         } catch (ex){
             return res.send(ex.message);
         }
 
-        try {
-
-        } catch (ex) {
-            return res.send(ex.message);
-        }
     });
 
 function updateWorkPlace(req, workPlace) {
@@ -74,26 +78,26 @@ function updateWorkPlace(req, workPlace) {
     if (req.body.isPast) {
         workPlace.isPast = req.body.isPast;
     }
-    if (req.body.fullName) {
-        workPlace.contactPerson.fullName = req.body.fullName;
+    if (req.body.contactPerson.fullName) {
+        workPlace.contactPerson.fullName = req.body.contactPerson.fullName;
     }
-    if (req.body.phone) {
-        workPlace.contactPerson.phone = req.body.phone;
+    if (req.body.contactPerson.phone) {
+        workPlace.contactPerson.phone = req.body.contactPerson.phone;
     }
-    if(req.body.email){
-        workPlace.contactPerson.email = req.body.email;
+    if(req.body.contactPerson.email){
+        workPlace.contactPerson.email = req.body.contactPerson.email;
     }
     if(req.body.street){
         workPlace.address.street = req.body.street;
     }
-    if(req.body.zipCode){
-        workPlace.address.zipCode = req.body.zipCode;
+    if(req.body.address.zipCode){
+        workPlace.address.zipCode = req.body.address.zipCode;
     }
-    if(req.body.city){
-        workPlace.address.city = req.body.city;
+    if(req.body.address.city){
+        workPlace.address.city = req.body.address.city;
     }
-    if(req.body.country){
-        workPlace.address = req.body.country;
+    if(req.body.address.country){
+        workPlace.address.country = req.body.address.country;
     }
 }
 router.route("/:workPlace_id")
@@ -142,7 +146,24 @@ router.route("/:workPlace_id")
             });
     })
     .delete(function (req, res) {
-        try {
+        WorkPlace.findById(req.params.workPlace_id,
+        function (err, workPlace) {
+            if(err){
+                return res.send(err);
+            }
+
+            workPlace.isPast = true;
+            workPlace.save(function (err) {
+                if (err){
+                    return res.send(err);
+                }
+                return res.json({
+                    success: true,
+                    message: "Work place moved to recycle bin"
+                });
+            })
+        })
+        /*try {
             WorkPlace.remove(
                 {
                     _id: req.body.workPlace_id
@@ -159,7 +180,7 @@ router.route("/:workPlace_id")
             );
         } catch (ex) {
             return res.seed(ex.message);
-        }
+        } */
     });
 
 module.exports = router;

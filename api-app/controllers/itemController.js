@@ -18,12 +18,14 @@ var itemController = {};
 
 
 /**
- * Gets all the items in the ItemModel definition.
+ * Gets all the items in the Item definition.
  * (From the item collection in the DB)
  */
 function getItems() {
     ItemModel.find(function (err, items) {
+        console.log("itemController.getItems(Item.find(err, items)): items:", items);
         if (err) {
+            console.log("Error happened in itemController.getItems()");
             return err;
         }
         return items;
@@ -104,7 +106,7 @@ function updateItem(itemId, newItem) {
  */
 function deleteItem(itemId) {
     /*
-    ItemModel.remove({_id: itemId}, function (err, item) {
+    Item.remove({_id: itemId}, function (err, item) {
         if (err){
             return err;
         }

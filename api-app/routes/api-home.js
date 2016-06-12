@@ -108,9 +108,9 @@ module.exports = function (app, express) {
      * Route middle ware to verify a token
      */
     apiHomeRoute.use(function (req, res, next) {
-        console.log("Somebody tried to access the API. Checking token");
+        console.log("Somebody tried to access the API. verifying token");
         // Get token from header or url parameters or post parameters.
-        var token = req.body.token || req.query.token || req.headers['x-access-token'];
+        var token = req.body.token || req.query.token || req.headers["x-access-token"];
 
         // decode token
         if (token) {
